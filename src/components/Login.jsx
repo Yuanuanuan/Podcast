@@ -1,8 +1,8 @@
 import Carousel from './Carousel';
-import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
 // import { AuthContext } from '../context/AuthContext';
-import axios from 'axios';
+// import axios from 'axios';
 
 import logo from '../images/logo.svg';
 import slide1Img from '../images/slide1Img.svg';
@@ -12,12 +12,12 @@ import slide1ImgShadow from '../images/slide1ImgShadow.svg';
 import slide2ImgShadow from '../images/slide2ImgShadow.svg';
 import slide3ImgShadow from '../images/slide3ImgShadow.svg';
 
-const dummyItem = [
-  { name: '🚌 通勤清單' },
-  { name: '📚 學習清單'},
-  { name: '💤 睡前清單'},
-  { name: '🏘️ 我的Podcast'},
-]
+// const dummyItem = [
+//   { name: '🚌 通勤清單' },
+//   { name: '📚 學習清單'},
+//   { name: '💤 睡前清單'},
+//   { name: '🏘️ 我的Podcast'},
+// ]
 
 const Login = () => {
   const [slide, setSlide] = useState(1);
@@ -29,12 +29,12 @@ const Login = () => {
   //   setSpotifyUserInfo,
   //   getCategory,
   // } = useContext(AuthContext);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const CLIENT_ID = '43b60c935b7f4e26add3debfc7a382a0';
   const REDIRECT_URI = 'https://spotify-podcast.netlify.app/';
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
   const RESPONSE_TYPE = 'token';
-  const BASE_URL = 'https://spotify-backend.alphacamp.io';
+  // const BASE_URL = 'https://spotify-backend.alphacamp.io';
 
   // Use Spotify Token To Get The AuthToken
   // const getAuthToken = async(token) => {
