@@ -26,7 +26,7 @@ const Login = () => {
     authToken, 
     setAuthToken, 
     getUserInfo,
-    setSpotifyUserInfo,
+    // setSpotifyUserInfo,
     getCategory,
   } = useContext(AuthContext);
   const navigate = useNavigate();
