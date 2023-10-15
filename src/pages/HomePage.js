@@ -5,7 +5,7 @@ import Navigator from "../components/Navbar/Navigator";
 // import CreateModal from "../components/Modal/CreatePodcast";
 // import DeleteModal from "../components/Modal/DeleteModal";
 // import Main from "../components/Main/Main";
-// import '../styles/home.scss';
+import '../styles/home.scss';
 // import AddNewPodcast from "../components/Modal/AddNewPodcast";
 
 

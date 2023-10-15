@@ -80,15 +80,15 @@ const Login = () => {
   // }
 
   // Use Spotify Token To Get The Spotify's User Info
-  const getSpotifyUserInfo = async(token) => {
-    const { data } = await axios.get(`https://api.spotify.com/v1/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    window.localStorage.setItem('spotifyUserInfo', JSON.stringify(data))
-    setSpotifyUserInfo(data)
-  }
+  // const getSpotifyUserInfo = async(token) => {
+  //   const { data } = await axios.get(`https://api.spotify.com/v1/me`, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //     }
+  //   })
+  //   window.localStorage.setItem('spotifyUserInfo', JSON.stringify(data))
+  //   setSpotifyUserInfo(data)
+  // }
 
   // Set the token to localStorage & Get AuthToken
   useEffect(() => {
@@ -106,7 +106,7 @@ const Login = () => {
       window.localStorage.setItem('token', token)
       getAuthToken(token);
       sessionStorage.setItem('firstVisit', true)
-      getSpotifyUserInfo(token)
+      // getSpotifyUserInfo(token)
     }
     
     setToken(token);
