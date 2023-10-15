@@ -6,7 +6,7 @@ const LoginPage = ({ token, setToken, userInfo, setUserInfo, authToken, setAuthT
 
   return (
     <div className='login'>
-      <Login token={token} setToken={setToken} userInfo={userInfo} setUserInfo={setUserInfo} authToken={authToken} setAuthToken={setAuthToken} />
+      <Login token={token} setToken={setToken} userInfo={userInfo} setUserInfo={setUserInfo} authToken={authToken} setAuthToken={setAuthToken} /> 
     </div>
   )
 }
