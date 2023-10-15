@@ -1,3 +1,18 @@
+
+@font-face {
+  font-family: 'Noto Sans TC';
+  src: url('../Fonts/NotoSansTC-VariableFont_wght.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../Fonts/Poppins-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../Fonts/Montserrat-Regular.ttf') format('truetype');
+}
+
+
 .login {
   display: flex;
   min-height: 100vh;

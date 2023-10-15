@@ -1,8 +1,8 @@
 import Carousel from './Carousel';
-import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { AuthContext } from '../context/AuthContext';
-// import axios from 'axios';
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import axios from 'axios';
 
 import logo from '../images/logo.svg';
 import slide1Img from '../images/slide1Img.svg';
@@ -21,29 +21,29 @@ import slide3ImgShadow from '../images/slide3ImgShadow.svg';
 
 const Login = () => {
   const [slide, setSlide] = useState(1);
-  // const {
-  //   setToken, 
-  //   authToken, 
-  //   setAuthToken, 
-  //   getUserInfo,
-  //   setSpotifyUserInfo,
-  //   getCategory,
-  // } = useContext(AuthContext);
-  // const navigate = useNavigate();
+  const {
+    setToken, 
+    authToken, 
+    setAuthToken, 
+    getUserInfo,
+    setSpotifyUserInfo,
+    getCategory,
+  } = useContext(AuthContext);
+  const navigate = useNavigate();
   const CLIENT_ID = '43b60c935b7f4e26add3debfc7a382a0';
   const REDIRECT_URI = 'https://spotify-podcast.netlify.app/';
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
   const RESPONSE_TYPE = 'token';
-  // const BASE_URL = 'https://spotify-backend.alphacamp.io';
+  const BASE_URL = 'https://spotify-backend.alphacamp.io';
 
   // Use Spotify Token To Get The AuthToken
-  // const getAuthToken = async(token) => {
-  //   const { data } = await axios.post(`${BASE_URL}/api/users`, {
-  //     spotifyToken: token,
-  //   })
-  //   setAuthToken(data.token);
-  //   return data;
-  // }
+  const getAuthToken = async(token) => {
+    const { data } = await axios.post(`${BASE_URL}/api/users`, {
+      spotifyToken: token,
+    })
+    setAuthToken(data.token);
+    return data;
+  }
 
   // create a dummyItem categories
 
@@ -80,55 +80,55 @@ const Login = () => {
   // }
 
   // Use Spotify Token To Get The Spotify's User Info
-  // const getSpotifyUserInfo = async(token) => {
-  //   const { data } = await axios.get(`https://api.spotify.com/v1/me`, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`
-  //     }
-  //   })
-  //   window.localStorage.setItem('spotifyUserInfo', JSON.stringify(data))
-  //   setSpotifyUserInfo(data)
-  // }
+  const getSpotifyUserInfo = async(token) => {
+    const { data } = await axios.get(`https://api.spotify.com/v1/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    window.localStorage.setItem('spotifyUserInfo', JSON.stringify(data))
+    setSpotifyUserInfo(data)
+  }
 
   // Set the token to localStorage & Get AuthToken
-  // useEffect(() => {
-  //   const hash = window.location.hash
-  //   let token = window.localStorage.getItem("token")
+  useEffect(() => {
+    const hash = window.location.hash
+    let token = window.localStorage.getItem("token")
 
-  //   if (!token && hash) {
-  //     token = hash
-  //     .substring(1)
-  //     .split("&")
-  //     .find(elem => elem.startsWith("access_token"))
-  //     .split("=")[1]
+    if (!token && hash) {
+      token = hash
+      .substring(1)
+      .split("&")
+      .find(elem => elem.startsWith("access_token"))
+      .split("=")[1]
 
-  //     window.location.hash = ''
-  //     window.localStorage.setItem('token', token)
-  //     getAuthToken(token);
-  //     sessionStorage.setItem('firstVisit', true)
-  //     getSpotifyUserInfo(token)
-  //   }
+      window.location.hash = ''
+      window.localStorage.setItem('token', token)
+      getAuthToken(token);
+      sessionStorage.setItem('firstVisit', true)
+      getSpotifyUserInfo(token)
+    }
     
-  //   setToken(token);
+    setToken(token);
 
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Set the AuthToken to localStorage
-  // useEffect(() => {
-  //   if (authToken) {
-  //     window.localStorage.setItem('authToken', authToken)
-  //     // Get Cast's User Info
-  //     postAllDummyItems();
-  //     getUserInfo();
-  //     getCategory();
-  //     // Guide to HomePage
-  //     return navigate('/home');
-  //   }
-  //   // If !AuthToken, Guide to LoginPage
-  //   return navigate('/login');
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [authToken])
+  useEffect(() => {
+    if (authToken) {
+      window.localStorage.setItem('authToken', authToken)
+      // Get Cast's User Info
+      // postAllDummyItems();
+      getUserInfo();
+      getCategory();
+      // Guide to HomePage
+      return navigate('/home');
+    }
+    // If !AuthToken, Guide to LoginPage
+    return navigate('/login');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authToken])
 
   return (
     <>
