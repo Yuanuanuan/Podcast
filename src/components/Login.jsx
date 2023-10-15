@@ -31,6 +31,7 @@ const Login = () => {
   } = useContext(AuthContext);
   const navigate = useNavigate();
   const CLIENT_ID = '43b60c935b7f4e26add3debfc7a382a0';
+  // const REDIRECT_URI = 'https://spotify-podcast.netlify.app/';
   const REDIRECT_URI = 'https://spotify-podcast.netlify.app/';
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
   const RESPONSE_TYPE = 'token';
@@ -38,11 +39,17 @@ const Login = () => {
 
   // Use Spotify Token To Get The AuthToken
   const getAuthToken = async(token) => {
-    const { data } = await axios.post(`${BASE_URL}/api/users`, {
-      spotifyToken: token,
-    })
-    setAuthToken(data.token);
-    return data;
+    try {
+      const { data } = await axios.post(`${BASE_URL}/api/users`, {
+        spotifyToken: token,
+      })
+      console.log(data);
+      setAuthToken(data.token);
+      return data;
+
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   // create a dummyItem categories
