@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import Carousel from './Carousel';
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -26,16 +27,98 @@ const Login = () => {
     authToken, 
     setAuthToken, 
     getUserInfo,
-    // setSpotifyUserInfo,
+    setSpotifyUserInfo,
     getCategory,
   } = useContext(AuthContext);
   const navigate = useNavigate();
-  const CLIENT_ID = '43b60c935b7f4e26add3debfc7a382a0';
   // const REDIRECT_URI = 'https://spotify-podcast.netlify.app/';
-  const REDIRECT_URI = 'https://spotify-podcast.netlify.app/';
+  const REDIRECT_URI = 'http://localhost:3001';
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
   const RESPONSE_TYPE = 'token';
+  // href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+
   const BASE_URL = 'https://spotify-backend.alphacamp.io';
+
+
+  const authorize = async () => {
+    const clientId = process.env.clientId;
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
+    if (!code) {
+        redirectToAuthCodeFlow(clientId);
+    } else {
+        const accessToken = await getAccessToken(clientId, code);
+        const profile = await fetchProfile(accessToken);
+        console.log(profile);
+        // populateUI(profile);
+    }
+
+    async function redirectToAuthCodeFlow(clientId) {
+      const verifier = generateCodeVerifier(128);
+      const challenge = await generateCodeChallenge(verifier);
+
+      localStorage.setItem("verifier", verifier);
+
+      const params = new URLSearchParams();
+      params.append("client_id", clientId);
+      params.append("response_type", "code");
+      params.append("redirect_uri", "http://localhost:3001");
+      params.append("scope", "user-read-private user-read-email");
+      params.append("code_challenge_method", "S256");
+      params.append("code_challenge", challenge);
+
+      window.location.href = `https://accounts.spotify.com/authorize?${params.toString()}`;
+    }
+
+    function generateCodeVerifier(length) {
+        let text = '';
+        let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        for (let i = 0; i < length; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
+    }
+
+    async function generateCodeChallenge(codeVerifier) {
+        const data = new TextEncoder().encode(codeVerifier);
+        const digest = await window.crypto.subtle.digest('SHA-256', data);
+        return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=+$/, '');
+    }
+
+    async function getAccessToken(clientId, code) {
+      const verifier = localStorage.getItem("verifier");
+
+      const params = new URLSearchParams();
+      params.append("client_id", clientId);
+      params.append("grant_type", "authorization_code");
+      params.append("code", code);
+      params.append("redirect_uri", "http://localhost:3001");
+      params.append("code_verifier", verifier);
+
+      const result = await fetch("https://accounts.spotify.com/api/token", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: params
+      });
+
+      const { access_token } = await result.json();
+      console.log(access_token);
+      return access_token;
+    }
+
+    async function fetchProfile(token) {
+      const result = await fetch("https://api.spotify.com/v1/me", {
+          method: "GET", headers: { Authorization: `Bearer ${token}` }
+      });
+
+      return await result.json();
+    }
+  }
 
   // Use Spotify Token To Get The AuthToken
   const getAuthToken = async(token) => {
@@ -87,15 +170,16 @@ const Login = () => {
   // }
 
   // Use Spotify Token To Get The Spotify's User Info
-  // const getSpotifyUserInfo = async(token) => {
-  //   const { data } = await axios.get(`https://api.spotify.com/v1/me`, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`
-  //     }
-  //   })
-  //   window.localStorage.setItem('spotifyUserInfo', JSON.stringify(data))
-  //   setSpotifyUserInfo(data)
-  // }
+  const getSpotifyUserInfo = async(token) => {
+    const { data } = await axios.get(`https://api.spotify.com/v1/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    window.localStorage.setItem('spotifyUserInfo', JSON.stringify(data))
+    console.log(data)
+    setSpotifyUserInfo(data)
+  }
 
   // Set the token to localStorage & Get AuthToken
   useEffect(() => {
@@ -113,7 +197,7 @@ const Login = () => {
       window.localStorage.setItem('token', token)
       getAuthToken(token);
       sessionStorage.setItem('firstVisit', true)
-      // getSpotifyUserInfo(token)
+      getSpotifyUserInfo(token)
     }
     
     setToken(token);
@@ -142,8 +226,7 @@ const Login = () => {
       <div className="login-wrapper">
         <img src={logo} alt="logo" className='logo'/>
         <h2>Connecting Stories That Matter</h2>
-          <a 
-          href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`} className='connect-spotify' >
+          <a className='connect-spotify' onClick={authorize}>
             使用SPOTIFY帳號登入</a>
         <h3>沒有帳號嗎?
           <a href='https://www.spotify.com/tw/signup?forward_url=https%3A%2F%2Fopen.spotify.com%2F' target='_blank' rel="noreferrer">
