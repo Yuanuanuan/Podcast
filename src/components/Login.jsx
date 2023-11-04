@@ -31,8 +31,8 @@ const Login = () => {
   } = useContext(AuthContext);
   const navigate = useNavigate();
   const CLIENT_ID = process.env.REACT_APP_ClientId;
-  const REDIRECT_URI = "https://spotify-podcast.netlify.app";
-  // const REDIRECT_URI = "http://localhost:3000";
+  // const REDIRECT_URI = "https://spotify-podcast.netlify.app";
+  const REDIRECT_URI = "http://localhost:3000";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "token";
   const BASE_URL = "https://spotify-backend.alphacamp.io";
