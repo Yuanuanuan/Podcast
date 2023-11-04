@@ -30,15 +30,15 @@ const Login = () => {
     getCategory,
   } = useContext(AuthContext);
   const navigate = useNavigate();
-  const CLIENT_ID = "43b60c935b7f4e26add3debfc7a382a0";
-  const REDIRECT_URI = "https://spotify-podcast.netlify.app";
+  const CLIENT_ID = process.env.REACT_APP_ClientId;
+  // const REDIRECT_URI = "https://spotify-podcast.netlify.app";
+  const REDIRECT_URI = "http://localhost:3000";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "token";
   const BASE_URL = "https://spotify-backend.alphacamp.io";
 
-  // Use Spotify Token To Get The AuthToken
+  // 用Spotify的Token來獲取AlphaCamp的Token
   const getAuthToken = async (token) => {
-    console.log(token);
     try {
       const res = await axios.post(
         `https://spotify-backend.alphacamp.io/api/users`,
@@ -46,7 +46,6 @@ const Login = () => {
           spotifyToken: `${token}`,
         }
       );
-      console.log(res);
       const data = res.data;
       setAuthToken(data.token);
       return data;
@@ -54,8 +53,8 @@ const Login = () => {
       console.log(err);
     }
   };
-  // create a dummyItem categories
 
+  // 創建初始的資料夾
   const postDummyItem = async (item) => {
     try {
       const res = await axios.post(
@@ -76,6 +75,7 @@ const Login = () => {
     }
   };
 
+  // 初始化使用者資料夾
   const postAllDummyItems = async () => {
     if (sessionStorage.getItem("firstVisit") === true) {
       try {
@@ -90,7 +90,7 @@ const Login = () => {
     }
   };
 
-  // Use Spotify Token To Get The Spotify's User Info
+  // 獲取 Spotify 的使用者資訊
   const getSpotifyUserInfo = async (token) => {
     try {
       const { data } = await axios.get(`https://api.spotify.com/v1/me`, {
@@ -105,7 +105,10 @@ const Login = () => {
     }
   };
 
-  // Set the token to localStorage & Get AuthToken
+  // 獲取Spotify token
+  // 將Spotify token設在localstorage
+  // 用Spotify token獲取Alpha token
+  // 獲取spotify使用者資訊
   useEffect(() => {
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
@@ -129,18 +132,20 @@ const Login = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Set the AuthToken to localStorage
+  // 將Alpha token設在localStorage
   useEffect(() => {
     if (authToken) {
       window.localStorage.setItem("authToken", authToken);
-      // Get Cast's User Info
+      // 初始化資料夾
+      // 獲取Alpha使用者資訊
+      // 獲取使用者的分類
       postAllDummyItems();
       getUserInfo();
       getCategory();
-      // Guide to HomePage
+      // 導向主頁
       return navigate("/home");
     }
-    // If !AuthToken, Guide to LoginPage
+    // 如果沒有獲取到Alpha token就重新導向Login頁面
     return navigate("/login");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authToken]);
