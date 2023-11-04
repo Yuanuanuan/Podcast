@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 
 export const AuthContext = createContext();
 
@@ -137,19 +137,19 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  // const Toast = Swal.mixin({
-  //   toast: true,
-  //   position: 'bottom-end',
-  //   showConfirmButton: false,
-  //   timer: 2000,
-  //   width: '343px',
-  //   showClass: {
-  //     popup: 'animate__animated animate__fadeInUp'
-  //   },
-  //   hideClass: {
-  //     popup: 'animate__animated animate__fadeOutDown'
-  //   }
-  // });
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: 2000,
+    width: '343px',
+    showClass: {
+      popup: 'animate__animated animate__fadeInUp'
+    },
+    hideClass: {
+      popup: 'animate__animated animate__fadeOutDown'
+    }
+  });
 
   const saveEpisode = async(id) => {
     try {
@@ -162,20 +162,20 @@ export const AuthProvider = ({ children }) => {
         }
       })
 
-      // Toast.fire({
-      //   icon: 'success',
-      //   title: '成功加入收藏 😊'
-      // })
+      Toast.fire({
+        icon: 'success',
+        title: '成功加入收藏 😊'
+      })
 
       return data;
 
     } catch (err) {
       console.error(err);
 
-      // Toast.fire({
-      //   icon: 'error',
-      //   title: '加入收藏失敗 😢'
-      // })
+      Toast.fire({
+        icon: 'error',
+        title: '加入收藏失敗 😢'
+      })
     }
   } 
 
@@ -187,10 +187,10 @@ export const AuthProvider = ({ children }) => {
         }
       })
 
-      // Toast.fire({
-      //   icon: 'success',
-      //   title: '成功移除收藏 😊'
-      // })
+      Toast.fire({
+        icon: 'success',
+        title: '成功移除收藏 😊'
+      })
 
       return data;
 
