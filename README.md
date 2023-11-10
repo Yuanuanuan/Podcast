@@ -6,12 +6,12 @@
 前端串接由 Spotify 提供的 API 來獲取資料。
 後端使用由 APLHA CAMP 提供資料庫來儲存資料。
 ![cover](./src/images/cover/1.png)
-![cover](./src/images/cover/2.png)
-![cover](./src/images/cover/3.png)
-![cover](./src/images/cover/4.png)
-![cover](./src/images/cover/5.png)
-![cover](./src/images/cover/6.png)
-![cover](./src/images/cover/7.png)
+![cover](./src/images/cover/2.PNG)
+![cover](./src/images/cover/3.PNG)
+![cover](./src/images/cover/4.PNG)
+![cover](./src/images/cover/5.PNG)
+![cover](./src/images/cover/6.PNG)
+![cover](./src/images/cover/7.PNG)
 
 ## 功能
 
